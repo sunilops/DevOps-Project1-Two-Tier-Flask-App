@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sunil | Flask App 🚀</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background: radial-gradient(circle at top, #1b1f3b, #0b0d1a);
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .card {
+            width: 100%;
+            max-width: 1000px;
+            background: rgba(255, 255, 255, 0.06);
+            backdrop-filter: blur(14px);
+            border-radius: 22px;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.6);
+            display: grid;
+            grid-template-columns: 260px 1fr;
+            overflow: hidden;
+        }
+
+        /* LEFT PANEL */
+        .sidebar {
+            background: linear-gradient(180deg, #5a8cff, #3b5bdb);
+            padding: 30px;
+            text-align: center;
+        }
+
+        .sidebar img {
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            border: 4px solid rgba(255,255,255,0.7);
+            margin-bottom: 20px;
+        }
+
+        .sidebar h2 {
+            font-size: 1.4rem;
+            font-weight: 700;
+        }
+
+        .sidebar p {
+            font-size: 0.9rem;
+            opacity: 0.9;
+            margin-top: 6px;
+        }
+
+        /* RIGHT PANEL */
+        .main {
+            padding: 35px;
+        }
+
+        .main h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .subtitle {
+            color: #9db3ff;
+            margin-bottom: 25px;
+        }
+
+        .section {
+            background: rgba(255,255,255,0.05);
+            border-radius: 14px;
+            padding: 18px;
+            margin-bottom: 20px;
+        }
+
+        .section h3 {
+            color: #7ea0ff;
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+
+        .section p {
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: #ddd;
+        }
+
+        /* CHAT */
+        .messages {
+            max-height: 220px;
+            overflow-y: auto;
+            margin-bottom: 15px;
+        }
+
+        .messages p {
+            background: rgba(255,255,255,0.08);
+            padding: 10px 14px;
+            border-radius: 12px;
+            margin-bottom: 8px;
+            width: fit-content;
+            max-width: 85%;
+        }
+
+        form {
+            display: flex;
+            gap: 10px;
+        }
+
+        input[type="text"] {
+            flex: 1;
+            padding: 12px 14px;
+            border-radius: 10px;
+            border: 1px solid rgba(126,160,255,0.4);
+            background: rgba(255,255,255,0.06);
+            color: #fff;
+            outline: none;
+        }
+
+        input[type="text"]:focus {
+            border-color: #7ea0ff;
+            box-shadow: 0 0 12px rgba(126,160,255,0.5);
+        }
+
+        input[type="submit"] {
+            padding: 12px 20px;
+            border-radius: 10px;
+            border: none;
+            cursor: pointer;
+            background: linear-gradient(135deg, #7ea0ff, #4f6bff);
+            color: #fff;
+            font-weight: 600;
+            transition: 0.3s ease;
+        }
+
+        input[type="submit"]:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(126,160,255,0.5);
+        }
+
+        /* MOBILE */
+        @media (max-width: 850px) {
+            .card {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar {
+                border-radius: 0 0 20px 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="card">
+
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+        <img src="1.jpeg" alt="Sunil Photo">
+        <h2>Sunil</h2>
+        <p>DevOps & Cloud Enthusiast</p>
+    </div>
+
+    <!-- MAIN -->
+    <div class="main">
+        <h1>Flask Messaging App 🚀</h1>
+        <p class="subtitle">AWS EC2 • Docker • Jenkins • CI/CD</p>
+
+        <div class="section">
+            <h3>About Me</h3>
+            <p>
+                Hi, I'm <b>Sunil</b> 👋 — an aspiring Cloud & DevOps Engineer.
+                I deployed a 2-tier Flask + MySQL application on AWS EC2 using Docker
+                Compose with custom networking, persistent volumes, and Jenkins-based
+                CI/CD for automated deployments.
+            </p>
+        </div>
+
+        <div class="section messages">
+            {% for message in messages %}
+                <p>{{ message[0] }}</p>
+            {% endfor %}
+        </div>
+
+        <form id="messageForm">
+            <input type="text" name="new_message" placeholder="Type a message..." required>
+            <input type="submit" value="Send">
+        </form>
+    </div>
+
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $("#messageForm").on("submit", function(e) {
+        e.preventDefault();
+        let msg = $("input[name='new_message']").val().trim();
+        if (!msg) return;
+
+        $.post("/submit", { new_message: msg }, function(res) {
+            $(".messages").append("<p>" + res.message + "</p>");
+            $("input[name='new_message']").val("");
+        });
+    });
+</script>
+
+</body>
+</html>
